@@ -2,6 +2,7 @@ package io.github.wootwoot1234;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -17,6 +18,7 @@ import java.nio.charset.Charset;
 
 
 public class WebkitLocalStorageReaderModule extends ReactContextBaseJavaModule {
+    private static final String ME = WebkitLocalStorageReaderModule.class.getSimpleName();
 
     public WebkitLocalStorageReaderModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -28,6 +30,9 @@ public class WebkitLocalStorageReaderModule extends ReactContextBaseJavaModule {
     }
 
     public WritableMap getLevel() {
+
+        Log.d(ME, "loading leveldb");
+
         String dataDir = getReactApplicationContext().getApplicationInfo().dataDir;
         WritableMap kv = new WritableNativeMap();
 
@@ -71,19 +76,19 @@ public class WebkitLocalStorageReaderModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void get(Promise promise) {
-        WritableMap kv = getLevel();
-        boolean hasItems = kv.keySetIterator().hasNextKey();
+        // WritableMap kv = getLevel();
+        // boolean hasItems = kv.keySetIterator().hasNextKey();
+        //
+        // if (hasItems) {
+        //     promise.resolve(kv);
+        //     return;
+        // }
 
-        if (hasItems) {
-            promise.resolve(kv);
-            return;
-        }
-
+        WritableMap kv = new WritableNativeMap();
         String dataDir = getReactApplicationContext().getApplicationInfo().dataDir;
+        Log.d(ME, "loading localstorage from data dir " + dataDir);
 
         File localstorage = new File(dataDir + "/app_webview/Local Storage/file__0.localstorage");
-        File leveldb = new File(dataDir + "/app_webview/Local Storage/leveldb");
-
 
         if (!localstorage.exists()) {
             promise.resolve(kv);
