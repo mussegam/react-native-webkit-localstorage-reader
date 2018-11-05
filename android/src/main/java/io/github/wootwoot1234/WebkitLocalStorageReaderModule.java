@@ -76,15 +76,15 @@ public class WebkitLocalStorageReaderModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void get(Promise promise) {
-        // WritableMap kv = getLevel();
-        // boolean hasItems = kv.keySetIterator().hasNextKey();
-        //
-        // if (hasItems) {
-        //     promise.resolve(kv);
-        //     return;
-        // }
+         WritableMap kv = getLevel();
+         boolean hasItems = kv.keySetIterator().hasNextKey();
 
-        WritableMap kv = new WritableNativeMap();
+         if (hasItems) {
+             promise.resolve(kv);
+             return;
+         }
+
+        //WritableMap kv = new WritableNativeMap();
         String dataDir = getReactApplicationContext().getApplicationInfo().dataDir;
         Log.d(ME, "loading localstorage from data dir " + dataDir);
 
